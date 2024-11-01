@@ -68,7 +68,7 @@ static int	set_mutex(t_table *table)
 {
 	table->fork_locks = set_fork(table);
 	if (!table->fork_locks)
-		return (false);
+		return (0);
 	if (pthread_mutex_init(&table->sim_stop_lock, 0) != 0)
 		return (1);
 	if (pthread_mutex_init(&table->write_lock, 0) != 0)
@@ -89,5 +89,6 @@ t_table	*init_set(int argc, char **argv)
 		return (NULL);
 	if (set_mutex(table))
 		return (NULL);
+	table->sim_stop = false;
 	return (table);
 }
