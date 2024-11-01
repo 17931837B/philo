@@ -39,6 +39,8 @@ typedef struct s_philo
 	t_table				*table;
 }	t_philo;
 
-int	check_arg(int argc, char **argv);
+int		check_arg(int argc, char **argv);
+t_table	*init_set(int argc, char **argv);
+void	set_arg(int argc, char **argv, t_table *table);
 
 #endif
