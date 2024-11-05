@@ -35,18 +35,18 @@ static t_philo	**set_philos(t_table *table)
 		philos[i] = malloc(sizeof(t_philo));
 		if (philos[i] == NULL)
 			return (NULL);
-		if (pthread_mutex_init(&philos[i]->meal_time_lock, 0) != 0)
+		if (pthread_mutex_init(&philos[i]->eating_time, 0) != 0)
 			return (NULL);
 		philos[i]->table = table;
 		philos[i]->id = i;
-		philos[i]->time_ate = 0;
+		philos[i]->eat_count = 0;
 		set_dominannt(philos[i]);
 		i++;
 	}
 	return (philos);
 }
 
-pthread_mutex_t	*set_fork(t_table *table)
+static pthread_mutex_t	*set_fork(t_table *table)
 {
 	pthread_mutex_t	*forks;
 	int				i;
@@ -57,7 +57,7 @@ pthread_mutex_t	*set_fork(t_table *table)
 		return (NULL);
 	while (i < table->num_of_philos)
 	{
-		if (pthread_mutex_init(&forks[i], 0) != 0)
+		if (pthread_mutex_init(&forks[i], NULL) != 0)
 			return (NULL);
 		i++;
 	}
@@ -66,10 +66,10 @@ pthread_mutex_t	*set_fork(t_table *table)
 
 static int	set_mutex(t_table *table)
 {
-	table->fork_locks = set_fork(table);
-	if (!table->fork_locks)
+	table->fork_lock = set_fork(table);
+	if (!table->fork_lock)
 		return (0);
-	if (pthread_mutex_init(&table->sim_stop_lock, 0) != 0)
+	if (pthread_mutex_init(&table->fin_lock, 0) != 0)
 		return (1);
 	if (pthread_mutex_init(&table->write_lock, 0) != 0)
 		return (1);
@@ -89,6 +89,6 @@ t_table	*init_set(int argc, char **argv)
 		return (NULL);
 	if (set_mutex(table))
 		return (NULL);
-	table->sim_stop = false;
+	table->fin = 0;
 	return (table);
 }

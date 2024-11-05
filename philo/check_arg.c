@@ -42,7 +42,7 @@ static int	is_correct_num(int argc, char **argv)
 		num = ft_atoi(argv[i]);
 		if (num > INT_MAX)
 			return (EXIT_FAILURE);
-		if (i == 1 && num == 0)
+		if ((i == 1 || i == 2) && num == 0)
 			return (EXIT_FAILURE);
 		i++;
 	}
@@ -54,6 +54,8 @@ int	check_arg(int argc, char **argv)
 	if (argc != 5 && argc != 6)
 		return (EXIT_FAILURE);
 	else if (is_correct_num(argc, argv))
+		return (EXIT_FAILURE);
+	else if (argc == 6 && argv[5][0] == '0' && !argv[5][1])
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
